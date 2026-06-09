@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="background">#F4F7FB</color>
+    <color name="cardStroke">#D9E2F1</color>
+    <color name="primary">#2F5BEA</color>
+    <color name="primary_dark">#2346B8</color>
+    <color name="secondary">#18A999</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="surface_dark">#1E2633</color>
+    <color name="surface_dark_alt">#2A3445</color>
+    <color name="textPrimary">#1D2433</color>
+    <color name="textSecondary">#5F697D</color>
+    <color name="text_on_dark">#F5F7FA</color>
+    <string name="app_name">学生成绩管理系统</string>
+    <style name="Theme.StudentScoreManager" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryContainer">@color/primary_dark</item>
+        <item name="colorSecondary">@color/secondary</item>
+        <item name="android:statusBarColor">@color/primary_dark</item>
+        <item name="android:navigationBarColor">@color/background</item>
+        <item name="android:windowBackground">@color/background</item>
+        <item name="popupMenuStyle">@style/Widget.StudentScoreManager.PopupMenu</item>
+        <item name="android:popupMenuStyle">@style/Widget.StudentScoreManager.PopupMenu</item>
+    </style>
+    <style name="ThemeOverlay.StudentScoreManager.PopupMenu" parent="ThemeOverlay.Material3.Dark">
+        <item name="android:colorBackground">@color/surface_dark</item>
+        <item name="colorSurface">@color/surface_dark</item>
+        <item name="colorOnSurface">@color/text_on_dark</item>
+        <item name="android:textColorPrimary">@color/text_on_dark</item>
+        <item name="android:textColorSecondary">@color/text_on_dark</item>
+    </style>
+    <style name="Widget.StudentScoreManager.PopupMenu" parent="Widget.Material3.PopupMenu">
+        <item name="android:popupBackground">@drawable/bg_popup_menu</item>
+    </style>
+</resources>
