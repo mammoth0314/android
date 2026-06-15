@@ -8,6 +8,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.StudentScoreManager">
         <activity
+            android:name=".UserManageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CourseListActivity"
+            android:exported="false" />
+        <activity
             android:name=".SelectCourseActivity"
             android:exported="false" />
         <activity

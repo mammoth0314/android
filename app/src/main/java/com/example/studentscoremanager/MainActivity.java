@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
     private final List<ScoreRecord> data = new ArrayList<>();
     private ScoreAdapter adapter;
     private ScoreDao scoreDao;
-    private ListView listView;
     private TextView tvEmpty;
     private String username;
     private String role;
@@ -66,12 +65,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("学生成绩管理系统");
+            getSupportActionBar().setTitle("成绩管理");
             getSupportActionBar().setSubtitle(buildSubtitle());
         }
 
         scoreDao = new ScoreDao(this);
-        listView = findViewById(R.id.listView);
+        ListView listView = findViewById(R.id.listView);
         tvEmpty = findViewById(R.id.tvEmpty);
 
         adapter = new ScoreAdapter(this, data);
@@ -86,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
             ScoreRecord record = data.get(position);
             Toast.makeText(this,
                     "课程：" + record.getCourseName() + "，学生：" + record.getStudentName()
-                            + "，成绩：" + (record.getScore() == null ? "未评分" : record.getScore() + "分"),
+                            + "，成绩：" + (record.getScore() == null ? "未录入" : record.getScore() + " 分"),
                     Toast.LENGTH_SHORT).show();
         });
     }
@@ -113,10 +112,6 @@ public class MainActivity extends AppCompatActivity {
         return DBHelper.ROLE_ADMIN.equals(role) || DBHelper.ROLE_TEACHER.equals(role);
     }
 
-    private boolean isStudent() {
-        return DBHelper.ROLE_STUDENT.equals(role);
-    }
-
     private void loadData() {
         data.clear();
         data.addAll(scoreDao.getVisibleScores(role, username, currentOrderBy));
@@ -126,22 +121,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        MenuItem addScore = menu.findItem(R.id.action_add_score);
-        MenuItem addCourse = menu.findItem(R.id.action_add_course);
-        MenuItem selectCourse = menu.findItem(R.id.action_select_course);
-        MenuItem clearAll = menu.findItem(R.id.action_clear_all);
-
-        if (isStudent()) {
-            addScore.setVisible(false);
-            addCourse.setVisible(false);
-            clearAll.setVisible(false);
-            selectCourse.setVisible(true);
-        } else if (DBHelper.ROLE_TEACHER.equals(role)) {
-            selectCourse.setVisible(false);
-            clearAll.setVisible(false);
-        } else {
-            selectCourse.setVisible(false);
-        }
+        menu.findItem(R.id.action_add_score).setVisible(isTeacherOrAdmin());
+        menu.findItem(R.id.action_manage_courses).setVisible(true);
+        menu.findItem(R.id.action_manage_users).setVisible(DBHelper.ROLE_ADMIN.equals(role));
+        menu.findItem(R.id.action_clear_all).setVisible(DBHelper.ROLE_ADMIN.equals(role));
         return true;
     }
 
@@ -154,15 +137,14 @@ public class MainActivity extends AppCompatActivity {
                     .putExtra(EXTRA_USERNAME, username)
                     .putExtra(EXTRA_REAL_NAME, realName));
             return true;
-        } else if (id == R.id.action_add_course) {
-            startActivity(new Intent(this, CourseActivity.class)
+        } else if (id == R.id.action_manage_courses) {
+            startActivity(new Intent(this, CourseListActivity.class)
+                    .putExtra(EXTRA_ROLE, role)
                     .putExtra(EXTRA_USERNAME, username)
                     .putExtra(EXTRA_REAL_NAME, realName));
             return true;
-        } else if (id == R.id.action_select_course) {
-            startActivity(new Intent(this, SelectCourseActivity.class)
-                    .putExtra(EXTRA_USERNAME, username)
-                    .putExtra(EXTRA_REAL_NAME, realName));
+        } else if (id == R.id.action_manage_users) {
+            startActivity(new Intent(this, UserManageActivity.class));
             return true;
         } else if (id == R.id.action_clear_all) {
             confirmClearAll();
@@ -191,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void confirmClearAll() {
         if (data.isEmpty()) {
-            Toast.makeText(this, "当前没有可清空的数据", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "当前没有可清空的成绩数据", Toast.LENGTH_SHORT).show();
             return;
         }
         new MaterialAlertDialogBuilder(this)
@@ -199,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
                 .setMessage("确定要删除全部成绩记录吗？")
                 .setPositiveButton("确定", (dialog, which) -> {
                     int count = scoreDao.deleteAllScores();
-                    Toast.makeText(this, "已清空 " + count + " 条记录", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "已清空 " + count + " 条成绩记录", Toast.LENGTH_SHORT).show();
                     loadData();
                 })
                 .setNegativeButton("取消", null)

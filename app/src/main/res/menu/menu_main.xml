@@ -8,13 +8,13 @@
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/action_add_course"
-        android:title="添加课程"
+        android:id="@+id/action_manage_courses"
+        android:title="课程管理"
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/action_select_course"
-        android:title="选择课程"
+        android:id="@+id/action_manage_users"
+        android:title="用户管理"
         app:showAsAction="never" />
 
     <item
@@ -42,4 +42,3 @@
         android:title="退出登录"
         app:showAsAction="never" />
 </menu>
-

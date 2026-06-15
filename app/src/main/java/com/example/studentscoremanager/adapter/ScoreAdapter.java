@@ -49,10 +49,10 @@ public class ScoreAdapter extends BaseAdapter {
 
         ScoreRecord item = getItem(position);
         holder.tvName.setText(item.getStudentName());
-        holder.tvScore.setText(item.getScore() == null ? "未评分" : item.getScore() + " 分");
-        holder.tvStudentNo.setText("学号：" + item.getStudentUsername());
+        holder.tvScore.setText(item.getScore() == null ? "未录入" : item.getScore() + " 分");
+        holder.tvStudentNo.setText("账号：" + item.getStudentUsername());
         holder.tvCourse.setText("课程：" + item.getCourseName());
-        holder.tvId.setText("教师：" + item.getTeacherName());
+        holder.tvId.setText("老师：" + item.getTeacherName());
         return convertView;
     }
 
@@ -72,4 +72,3 @@ public class ScoreAdapter extends BaseAdapter {
         }
     }
 }
-

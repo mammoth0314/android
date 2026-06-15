@@ -96,16 +96,15 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
                         android:layout_weight="1"
+                        android:backgroundTint="@android:color/white"
                         android:text="取消"
+                        android:textColor="@color/primary"
                         app:cornerRadius="14dp"
                         app:strokeColor="@color/primary"
-                        app:strokeWidth="1dp"
-                        android:backgroundTint="@android:color/white"
-                        android:textColor="@color/primary" />
+                        app:strokeWidth="1dp" />
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
     </ScrollView>
 
 </LinearLayout>
-

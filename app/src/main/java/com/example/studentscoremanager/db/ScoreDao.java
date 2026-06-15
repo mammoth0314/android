@@ -48,14 +48,42 @@ public class ScoreDao {
         return account;
     }
 
+    public List<UserAccount> getAllUsers() {
+        SQLiteDatabase db = helper.getReadableDatabase();
+        Cursor cursor = db.query(DBHelper.TABLE_USERS, null, null, null,
+                null, null, DBHelper.COL_ROLE + " ASC, " + DBHelper.COL_REAL_NAME + " COLLATE LOCALIZED ASC");
+        List<UserAccount> users = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            users.add(readUser(cursor));
+        }
+        cursor.close();
+        return users;
+    }
+
     public long registerUser(UserAccount user) {
         SQLiteDatabase db = helper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(DBHelper.COL_USERNAME, user.getUsername());
-        values.put(DBHelper.COL_PASSWORD, user.getPassword());
-        values.put(DBHelper.COL_ROLE, user.getRole());
-        values.put(DBHelper.COL_REAL_NAME, user.getRealName());
+        ContentValues values = buildUserValues(user);
         return db.insert(DBHelper.TABLE_USERS, null, values);
+    }
+
+    public int updateUser(UserAccount user) {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        return db.update(DBHelper.TABLE_USERS, buildUserValues(user),
+                DBHelper.COL_USERNAME + "=?", new String[]{user.getUsername()});
+    }
+
+    public int deleteUser(String username) {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        db.delete(DBHelper.TABLE_SCORES,
+                DBHelper.COL_STUDENT_USERNAME + "=? OR " + DBHelper.COL_TEACHER_USERNAME + "=?",
+                new String[]{username, username});
+        db.delete(DBHelper.TABLE_ENROLLMENTS,
+                DBHelper.COL_STUDENT_USERNAME + "=? OR " + DBHelper.COL_TEACHER_USERNAME + "=?",
+                new String[]{username, username});
+        db.delete(DBHelper.TABLE_COURSES, DBHelper.COL_TEACHER_USERNAME + "=?",
+                new String[]{username});
+        return db.delete(DBHelper.TABLE_USERS, DBHelper.COL_USERNAME + "=?",
+                new String[]{username});
     }
 
     public List<UserAccount> getStudents() {
@@ -70,13 +98,14 @@ public class ScoreDao {
         SQLiteDatabase db = helper.getReadableDatabase();
         Cursor cursor = db.query(DBHelper.TABLE_USERS, null,
                 DBHelper.COL_ROLE + "=?",
-                new String[]{role}, null, null, DBHelper.COL_REAL_NAME + " COLLATE LOCALIZED ASC");
-        List<UserAccount> list = new ArrayList<>();
+                new String[]{role}, null, null,
+                DBHelper.COL_REAL_NAME + " COLLATE LOCALIZED ASC");
+        List<UserAccount> users = new ArrayList<>();
         while (cursor.moveToNext()) {
-            list.add(readUser(cursor));
+            users.add(readUser(cursor));
         }
         cursor.close();
-        return list;
+        return users;
     }
 
     public long addCourse(String courseName, String teacherUsername, String teacherName) {
@@ -86,6 +115,36 @@ public class ScoreDao {
         values.put(DBHelper.COL_TEACHER_USERNAME, teacherUsername);
         values.put(DBHelper.COL_TEACHER_NAME, teacherName);
         return db.insert(DBHelper.TABLE_COURSES, null, values);
+    }
+
+    public int updateCourse(CourseItem course) {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(DBHelper.COL_COURSE_NAME, course.getCourseName());
+        values.put(DBHelper.COL_TEACHER_USERNAME, course.getTeacherUsername());
+        values.put(DBHelper.COL_TEACHER_NAME, course.getTeacherName());
+        int result = db.update(DBHelper.TABLE_COURSES, values,
+                DBHelper.COL_ID + "=?", new String[]{String.valueOf(course.getId())});
+
+        ContentValues relationValues = new ContentValues();
+        relationValues.put(DBHelper.COL_COURSE_NAME, course.getCourseName());
+        relationValues.put(DBHelper.COL_TEACHER_USERNAME, course.getTeacherUsername());
+        relationValues.put(DBHelper.COL_TEACHER_NAME, course.getTeacherName());
+        db.update(DBHelper.TABLE_ENROLLMENTS, relationValues,
+                DBHelper.COL_COURSE_ID + "=?", new String[]{String.valueOf(course.getId())});
+        db.update(DBHelper.TABLE_SCORES, relationValues,
+                DBHelper.COL_COURSE_ID + "=?", new String[]{String.valueOf(course.getId())});
+        return result;
+    }
+
+    public int deleteCourse(long courseId) {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        db.delete(DBHelper.TABLE_SCORES, DBHelper.COL_COURSE_ID + "=?",
+                new String[]{String.valueOf(courseId)});
+        db.delete(DBHelper.TABLE_ENROLLMENTS, DBHelper.COL_COURSE_ID + "=?",
+                new String[]{String.valueOf(courseId)});
+        return db.delete(DBHelper.TABLE_COURSES, DBHelper.COL_ID + "=?",
+                new String[]{String.valueOf(courseId)});
     }
 
     public List<CourseItem> getAllCourses() {
@@ -145,6 +204,16 @@ public class ScoreDao {
         return db.insert(DBHelper.TABLE_ENROLLMENTS, null, values);
     }
 
+    public int unenrollStudent(String studentUsername, long courseId) {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        db.delete(DBHelper.TABLE_SCORES,
+                DBHelper.COL_STUDENT_USERNAME + "=? AND " + DBHelper.COL_COURSE_ID + "=?",
+                new String[]{studentUsername, String.valueOf(courseId)});
+        return db.delete(DBHelper.TABLE_ENROLLMENTS,
+                DBHelper.COL_STUDENT_USERNAME + "=? AND " + DBHelper.COL_COURSE_ID + "=?",
+                new String[]{studentUsername, String.valueOf(courseId)});
+    }
+
     public boolean isEnrolled(String studentUsername, long courseId) {
         SQLiteDatabase db = helper.getReadableDatabase();
         Cursor cursor = db.query(DBHelper.TABLE_ENROLLMENTS, new String[]{DBHelper.COL_ID},
@@ -154,6 +223,19 @@ public class ScoreDao {
         boolean exists = cursor.moveToFirst();
         cursor.close();
         return exists;
+    }
+
+    public int getEnrollmentCount(long courseId) {
+        SQLiteDatabase db = helper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM " + DBHelper.TABLE_ENROLLMENTS
+                + " WHERE " + DBHelper.COL_COURSE_ID + "=?",
+                new String[]{String.valueOf(courseId)});
+        int count = 0;
+        if (cursor.moveToFirst()) {
+            count = cursor.getInt(0);
+        }
+        cursor.close();
+        return count;
     }
 
     public List<CourseItem> getEnrolledCoursesForStudent(String studentUsername) {
@@ -237,8 +319,7 @@ public class ScoreDao {
                         new String[]{String.valueOf(record.getId())});
             }
 
-            ScoreRecord existing = getScoreByStudentAndCourse(
-                    record.getStudentUsername(), record.getCourseId());
+            ScoreRecord existing = getScoreByStudentAndCourse(record.getStudentUsername(), record.getCourseId());
             if (existing != null) {
                 return -2;
             }
@@ -306,20 +387,6 @@ public class ScoreDao {
         return list;
     }
 
-    public List<ScoreRecord> getScoresForTeacherCourse(String teacherUsername, long courseId) {
-        SQLiteDatabase db = helper.getReadableDatabase();
-        Cursor cursor = db.query(DBHelper.TABLE_SCORES, null,
-                DBHelper.COL_TEACHER_USERNAME + "=? AND " + DBHelper.COL_COURSE_ID + "=?",
-                new String[]{teacherUsername, String.valueOf(courseId)},
-                null, null, DBHelper.COL_ID + " DESC");
-        List<ScoreRecord> list = new ArrayList<>();
-        while (cursor.moveToNext()) {
-            list.add(readScore(cursor));
-        }
-        cursor.close();
-        return list;
-    }
-
     public List<ScoreRecord> getAllScores() {
         return getVisibleScores(null, null);
     }
@@ -345,6 +412,15 @@ public class ScoreDao {
         }
         cursor.close();
         return list;
+    }
+
+    private ContentValues buildUserValues(UserAccount user) {
+        ContentValues values = new ContentValues();
+        values.put(DBHelper.COL_USERNAME, user.getUsername());
+        values.put(DBHelper.COL_PASSWORD, user.getPassword());
+        values.put(DBHelper.COL_ROLE, user.getRole());
+        values.put(DBHelper.COL_REAL_NAME, user.getRealName());
+        return values;
     }
 
     private UserAccount readUser(Cursor cursor) {

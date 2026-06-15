@@ -4,6 +4,10 @@
         "source": "C:\\Users\\86198\\.gradle\\daemon\\8.4\\com.example.studentscoremanager.app-main-33:\\layout\\activity_select_course.xml"
     },
     {
+        "merged": "C:\\Users\\86198\\.gradle\\daemon\\8.4\\com.example.studentscoremanager.app-merged_res-31:\\layout_activity_user_manage.xml.flat",
+        "source": "C:\\Users\\86198\\.gradle\\daemon\\8.4\\com.example.studentscoremanager.app-main-33:\\layout\\activity_user_manage.xml"
+    },
+    {
         "merged": "C:\\Users\\86198\\.gradle\\daemon\\8.4\\com.example.studentscoremanager.app-merged_res-31:\\layout_activity_register.xml.flat",
         "source": "C:\\Users\\86198\\.gradle\\daemon\\8.4\\com.example.studentscoremanager.app-main-33:\\layout\\activity_register.xml"
     },
@@ -28,12 +32,20 @@
         "source": "C:\\Users\\86198\\.gradle\\daemon\\8.4\\com.example.studentscoremanager.app-main-33:\\xml\\backup_rules.xml"
     },
     {
-        "merged": "com.example.studentscoremanager.app-merged_res-31:/menu_menu_main.xml.flat",
-        "source": "com.example.studentscoremanager.app-main-33:/menu/menu_main.xml"
-    },
-    {
         "merged": "C:\\Users\\86198\\.gradle\\daemon\\8.4\\com.example.studentscoremanager.app-merged_res-31:\\layout_activity_main.xml.flat",
         "source": "C:\\Users\\86198\\.gradle\\daemon\\8.4\\com.example.studentscoremanager.app-main-33:\\layout\\activity_main.xml"
+    },
+    {
+        "merged": "C:\\Users\\86198\\.gradle\\daemon\\8.4\\com.example.studentscoremanager.app-merged_res-31:\\layout_item_user.xml.flat",
+        "source": "C:\\Users\\86198\\.gradle\\daemon\\8.4\\com.example.studentscoremanager.app-main-33:\\layout\\item_user.xml"
+    },
+    {
+        "merged": "C:\\Users\\86198\\.gradle\\daemon\\8.4\\com.example.studentscoremanager.app-merged_res-31:\\layout_activity_course_list.xml.flat",
+        "source": "C:\\Users\\86198\\.gradle\\daemon\\8.4\\com.example.studentscoremanager.app-main-33:\\layout\\activity_course_list.xml"
+    },
+    {
+        "merged": "C:\\Users\\86198\\.gradle\\daemon\\8.4\\com.example.studentscoremanager.app-merged_res-31:\\menu_menu_user_context.xml.flat",
+        "source": "C:\\Users\\86198\\.gradle\\daemon\\8.4\\com.example.studentscoremanager.app-main-33:\\menu\\menu_user_context.xml"
     },
     {
         "merged": "C:\\Users\\86198\\.gradle\\daemon\\8.4\\com.example.studentscoremanager.app-merged_res-31:\\layout_item_student.xml.flat",
@@ -48,11 +60,19 @@
         "source": "com.example.studentscoremanager.app-main-33:/layout/activity_login.xml"
     },
     {
+        "merged": "C:\\Users\\86198\\.gradle\\daemon\\8.4\\com.example.studentscoremanager.app-merged_res-31:\\menu_menu_course_list.xml.flat",
+        "source": "C:\\Users\\86198\\.gradle\\daemon\\8.4\\com.example.studentscoremanager.app-main-33:\\menu\\menu_course_list.xml"
+    },
+    {
         "merged": "C:\\Users\\86198\\.gradle\\daemon\\8.4\\com.example.studentscoremanager.app-merged_res-31:\\menu_menu_main.xml.flat",
         "source": "C:\\Users\\86198\\.gradle\\daemon\\8.4\\com.example.studentscoremanager.app-main-33:\\menu\\menu_main.xml"
     },
     {
         "merged": "C:\\Users\\86198\\.gradle\\daemon\\8.4\\com.example.studentscoremanager.app-merged_res-31:\\layout_item_course.xml.flat",
         "source": "C:\\Users\\86198\\.gradle\\daemon\\8.4\\com.example.studentscoremanager.app-main-33:\\layout\\item_course.xml"
+    },
+    {
+        "merged": "C:\\Users\\86198\\.gradle\\daemon\\8.4\\com.example.studentscoremanager.app-merged_res-31:\\menu_menu_course_context.xml.flat",
+        "source": "C:\\Users\\86198\\.gradle\\daemon\\8.4\\com.example.studentscoremanager.app-main-33:\\menu\\menu_course_context.xml"
     }
 ]

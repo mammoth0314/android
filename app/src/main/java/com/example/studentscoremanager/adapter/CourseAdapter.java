@@ -1,6 +1,7 @@
 package com.example.studentscoremanager.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,18 +50,25 @@ public class CourseAdapter extends BaseAdapter {
 
         CourseItem item = getItem(position);
         holder.tvCourseName.setText(item.getCourseName());
-        holder.tvTeacher.setText("任课教师：" + item.getTeacherName());
+        holder.tvTeacher.setText("授课老师：" + item.getTeacherName());
+        if (TextUtils.isEmpty(item.getExtraInfo())) {
+            holder.tvExtra.setVisibility(View.GONE);
+        } else {
+            holder.tvExtra.setVisibility(View.VISIBLE);
+            holder.tvExtra.setText(item.getExtraInfo());
+        }
         return convertView;
     }
 
     private static class ViewHolder {
         final TextView tvCourseName;
         final TextView tvTeacher;
+        final TextView tvExtra;
 
         ViewHolder(View view) {
             tvCourseName = view.findViewById(R.id.tvCourseName);
             tvTeacher = view.findViewById(R.id.tvTeacher);
+            tvExtra = view.findViewById(R.id.tvExtra);
         }
     }
 }
-

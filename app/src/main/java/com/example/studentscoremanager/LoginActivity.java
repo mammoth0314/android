@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,7 +32,6 @@ public class LoginActivity extends AppCompatActivity {
         cbRemember = findViewById(R.id.cbRemember);
         Button btnLogin = findViewById(R.id.btnLogin);
         Button btnRegister = findViewById(R.id.btnRegister);
-        TextView tvHint = findViewById(R.id.tvLoginHint);
 
         String rememberedAccount = PrefUtils.getRememberedAccount(this);
         if (!TextUtils.isEmpty(rememberedAccount)) {
@@ -43,7 +41,6 @@ public class LoginActivity extends AppCompatActivity {
 
         btnLogin.setOnClickListener(v -> handleLogin());
         btnRegister.setOnClickListener(v -> startActivity(new Intent(this, RegisterActivity.class)));
-        tvHint.setText("默认管理员：admin / 123456");
     }
 
     private void handleLogin() {
@@ -67,9 +64,9 @@ public class LoginActivity extends AppCompatActivity {
         }
         SessionManager.save(this, account.getUsername(), account.getRole(), account.getRealName());
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("username", account.getUsername());
-        intent.putExtra("role", account.getRole());
-        intent.putExtra("realName", account.getRealName());
+        intent.putExtra(MainActivity.EXTRA_USERNAME, account.getUsername());
+        intent.putExtra(MainActivity.EXTRA_ROLE, account.getRole());
+        intent.putExtra(MainActivity.EXTRA_REAL_NAME, account.getRealName());
         startActivity(intent);
         finish();
     }

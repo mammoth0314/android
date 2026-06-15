@@ -25,6 +25,12 @@
         android:testOnly="true"
         android:theme="@style/Theme.StudentScoreManager" >
         <activity
+            android:name="com.example.studentscoremanager.UserManageActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.example.studentscoremanager.CourseListActivity"
+            android:exported="false" />
+        <activity
             android:name="com.example.studentscoremanager.SelectCourseActivity"
             android:exported="false" />
         <activity

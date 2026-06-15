@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_add_course"
+        android:title="添加课程"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_select_course"
+        android:title="选择课程"
+        app:showAsAction="never" />
+</menu>

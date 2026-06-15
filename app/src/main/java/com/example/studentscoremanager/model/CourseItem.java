@@ -5,6 +5,7 @@ public class CourseItem {
     private String courseName;
     private String teacherUsername;
     private String teacherName;
+    private String extraInfo;
 
     public CourseItem() {
     }
@@ -47,5 +48,12 @@ public class CourseItem {
     public void setTeacherName(String teacherName) {
         this.teacherName = teacherName;
     }
-}
 
+    public String getExtraInfo() {
+        return extraInfo;
+    }
+
+    public void setExtraInfo(String extraInfo) {
+        this.extraInfo = extraInfo;
+    }
+}

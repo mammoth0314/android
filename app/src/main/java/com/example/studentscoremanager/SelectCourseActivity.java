@@ -20,7 +20,6 @@ public class SelectCourseActivity extends AppCompatActivity {
     private final List<CourseItem> courses = new ArrayList<>();
     private ScoreDao scoreDao;
     private String username;
-    private String realName;
     private ListView listView;
     private ArrayAdapter<String> adapter;
 
@@ -39,12 +38,12 @@ public class SelectCourseActivity extends AppCompatActivity {
 
         scoreDao = new ScoreDao(this);
         username = getIntent().getStringExtra(MainActivity.EXTRA_USERNAME);
-        realName = getIntent().getStringExtra(MainActivity.EXTRA_REAL_NAME);
         listView = findViewById(R.id.listView);
         Button btnConfirm = findViewById(R.id.btnConfirm);
 
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_multiple_choice, new ArrayList<>());
+        adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_list_item_multiple_choice, new ArrayList<>());
         listView.setAdapter(adapter);
 
         loadCourses();
@@ -82,4 +81,3 @@ public class SelectCourseActivity extends AppCompatActivity {
         finish();
     }
 }
-
